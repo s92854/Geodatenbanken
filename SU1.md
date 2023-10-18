@@ -38,27 +38,51 @@ DESC = descending (abwärts: Z-A)
 ORDER BY name ASC/DESC
 ```
 
+### Joins
+ohne WHERE Bedingung entsteht ein Kreuzprodukt
+```
+SELECT *
+FROM aufkopf AS a, aufpos AS p
+WHERE a.aufnr=p.aufnr
+```
+
+```
+SELECT *
+FROM aufkopf AS a, aufpos AS p,kdst
+WHERE a.aufnr=p.aufnr
+    AND kdst.kdnr=a.kdnr
+```
+
+
+### Alle Datensatzfilter
+SELECT [DISTINCT] [SUM]
+FROM
+WHERE
+GROUP BY
+HAVING SUM(umssoll) [Boolischer Ausdruck]
+ORDER BY
+
 ## MS Access
 [Datenbank](https://github.com/s92854/Geodatenbanken/files/12866750/mat_inf.zip) in Access laden > Erstellen > Abfragentwurf > Ansicht > SQL Ansicht > bspw.: ```SELECT*FROM artst;``` > wieder Ansicht auf Datenblattansicht wechseln
 
 ## Training
 
 1. Um bspw. nach Artikeln zu filtern, deren Bestand negativ ist, kann man so filtern:
-```
+```SQL
 SELECT artbez,bestand
 FROM artst
 WHERE bestand<0
 ```
 
 2. Alle Kunden ausgeben, die AG haben:
-```
+```SQL
 SELECT *
 FROM kdst
 WHERE Firma LIKE "*AG"
 ```
 
 3. Artikelnummer, Artikelbezeichnung, Einkaufs- und Verkaufspreis ausgegeben, nach Artikelbezeichnungen in alphabetischer Reihenfolge ordnen:
-```
+```SQL
 SELECT artnr,artbez,ekpreis,vpreis
 FROM artst
 ORDER BY artbez ASC
@@ -83,6 +107,21 @@ ORDER BY ort ASC, plz DESC
 <img width="371" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/9541d433-8e66-4a50-8290-9dce95928451">
 
 
+```
+SELECT DISTINCT ort,SUM(umssoll)
+FROM kdst
+GROUP BY ort
+ORDER BY ort;
+
+```
+
+```
+
+SELECT ort,SUM(umssoll)
+FROM kdst
+GROUP BY ort
+HAVING SUM(umssoll) >= 30000
+```
 
 ## Übung 1
 
@@ -90,7 +129,7 @@ ORDER BY ort ASC, plz DESC
 ```
 SELECT aufnr,kdnr,ls_datum,rg_datum
 FROM aufkopf
-WHERE ls_datum > #12/30/2004#
+WHERE ls_datum > #12/01/2004#
 ```
 
 2. Namen welcher Vertreter enden auf „mann“?
@@ -110,5 +149,11 @@ WHERE prov = 3.3 OR prov = 3.7 OR prov = 5.4
 4. Alle Infos über alle Artikel:
 ```
 SELECT ARTNR,ARTBEZ,EKPREIS,VPREIS,MGEHT,GRUPPE,KW,BESTAND
+FROM artst
+```
+
+5. Über alle Artikel Bezeichnung, Einkaufs- und Verkaufspreis und der aktuelle (Lager-)Bestand:
+```
+SELECT artbez,ekpreis,vpreis,bestand
 FROM artst
 ```
