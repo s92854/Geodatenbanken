@@ -157,3 +157,30 @@ FROM artst
 SELECT artbez,ekpreis,vpreis,bestand
 FROM artst
 ```
+
+6. Welche Berliner Stadtteile sind Vertreter?
+```
+SELECT stadtteil
+FROM vert
+GROUP BY stadtteil
+```
+
+7. Von allen Kunden Kundennummer, Firmenbezeichnung, Umsatzsoll und -haben
+```
+SELECT kdnr,firma,umssoll,umshaben
+FROM kdst
+```
+
+8. Alle Artikel < 10: Artikelnummer, Bezeichnung, Bestand und Mengeneinheit; keine negativen Bestände
+```
+SELECT bestand, artnr,artbez,mgeht
+FROM artst
+WHERE bestand < 10 AND bestand >= 0
+```
+
+9. Alle Kunden mit ausgeglichenem Saldo: Kundennummer, Firma, Anschrift und Umsatzsoll
+```
+SELECT kdnr,firma,strasse + ', '+ plz + ', ' + ort AS adresse,umssoll
+FROM kdst
+WHERE saldo = 0
+```
