@@ -132,12 +132,17 @@ FROM aufkopf
 WHERE ls_datum > #12/01/2004#
 ```
 
+<img width="287" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/37dd43ca-5ee5-450c-a5e5-19b3a02d6d86">
+
 2. Namen welcher Vertreter enden auf „mann“?
 ```
 SELECT *
 FROM vert
-WHERE name LIKE "*mann"
+WHERE name LIKE "%mann"
 ```
+> '*mann' in Access
+
+<img width="704" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/62e4fbd5-f0b6-42aa-8158-9a4ff79c400d">
 
 3. Vertreter mit Provisionssatz von 3,3%, 3,7% oder 5,4%:
 ```
@@ -146,17 +151,23 @@ FROM vert
 WHERE prov = 3.3 OR prov = 3.7 OR prov = 5.4
 ```
 
+<img width="275" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/0a32db95-e0a1-4b10-9e83-a679fcc949fb">
+
 4. Alle Infos über alle Artikel:
 ```
 SELECT ARTNR,ARTBEZ,EKPREIS,VPREIS,MGEHT,GRUPPE,KW,BESTAND
 FROM artst
 ```
 
+<img width="537" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/eb07a837-abad-4022-afc2-5b85c71aa017">
+
 5. Über alle Artikel Bezeichnung, Einkaufs- und Verkaufspreis und der aktuelle (Lager-)Bestand:
 ```
 SELECT artbez,ekpreis,vpreis,bestand
 FROM artst
 ```
+
+<img width="297" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/fb7ed5f1-dded-46b5-9d2d-f0cee6f756b7">
 
 6. Welche Berliner Stadtteile sind Vertreter?
 ```
@@ -165,11 +176,15 @@ FROM vert
 GROUP BY stadtteil
 ```
 
+<img width="121" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/d1511267-3337-4206-bf14-82a12011b4eb">
+
 7. Von allen Kunden Kundennummer, Firmenbezeichnung, Umsatzsoll und -haben
 ```
 SELECT kdnr,firma,umssoll,umshaben
 FROM kdst
 ```
+
+<img width="314" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/c4f3a627-0cb7-4f0b-bea4-a36d6a2ed8fd">
 
 8. Alle Artikel < 10: Artikelnummer, Bezeichnung, Bestand und Mengeneinheit; keine negativen Bestände
 ```
@@ -178,12 +193,17 @@ FROM artst
 WHERE bestand < 10 AND bestand >= 0
 ```
 
+<img width="317" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/93312cc0-40b3-4932-b797-3486d0ecf3fb">
+
 9. Alle Kunden mit ausgeglichenem Saldo: Kundennummer, Firma, Anschrift und Umsatzsoll
 ```
-SELECT kdnr,firma,strasse + ', '+ plz + ', ' + ort AS adresse,umssoll
+SELECT kdnr,firma,strasse || ', '|| plz || ', ' || ort AS adresse,umssoll
 FROM kdst
 WHERE saldo = 0
 ```
+> in Access kann statt '||' der Operator '+' verwendet werden
+
+<img width="341" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/d1b8f5f6-b291-43e0-9c05-9cb444e22553">
 
 10. Alle Artikel mit positivem Lagerbestand & VP > 50€: Artikelnummer, Bezeichnung, Bestand, Verkaufs- und Einkaufspreis
 ```
