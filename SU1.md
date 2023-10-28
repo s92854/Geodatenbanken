@@ -138,7 +138,7 @@ WHERE ls_datum > #12/01/2004#
 ```
 SELECT *
 FROM vert
-WHERE name LIKE "%mann"
+WHERE name LIKE '%mann'
 ```
 > '*mann' in Access
 
@@ -207,23 +207,38 @@ WHERE saldo = 0
 
 10. Alle Artikel mit positivem Lagerbestand & VP > 50€: Artikelnummer, Bezeichnung, Bestand, Verkaufs- und Einkaufspreis
 ```
-
+SELECT artnr,artbez,bestand,vpreis,ekpreis
+FROM artst
+WHERE vpreis > 50 AND bestand > 0
 ```
+
+<img width="357" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/e3a61c99-09cf-406f-bd16-c1d4ebae1ac1">
 
 11. Vertreter mit Provision über 3,5%: Name & Anschrift (separate Spalten)
 ```
-
+SELECT name || ', ' || vorname AS Name, strasse || ', ' || plz || ', ' || ort || ', ' || stadtteil AS Anschrift
+FROM vert
+WHERE prov > 3.5
 ```
+
+<img width="282" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/b20558f1-2b0e-456a-8f5e-4a59f997ce9f">
 
 12.  alle Artikel Artikelnummer, Bezeichnung, Bestand, Verkaufs- und Einkaufspreis, Handelsspanne (Differenz aus Einkaufs- und Verkaufspreis) absolut und prozentual (auf den Verkaufspreis bezogen, 2 Nachkommastellen)
 ```
-
+SELECT artnr,artbez,bestand,vpreis,ekpreis,vpreis-ekpreis AS "Handelsspanne Absolut", ROUND(((vpreis-ekpreis)/vpreis)*100,2) AS "Handelsspanne Prozent"
+FROM artst
 ```
+
+<img width="551" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/5bcc1901-7bd2-44c7-bf99-f72f7c1cd083">
 
 13. Artikel, deren Handelsspanne größer als 8%: Artikelnummer, Bezeichnung und Handelsspanne
 ```
-
+SELECT artnr,artbez,bestand,vpreis,ekpreis, ROUND(((vpreis-ekpreis)/vpreis)*100,2) AS "Handelsspanne"
+FROM artst
+WHERE ((vpreis - ekpreis) / vpreis) * 100 > 8.0;
 ```
+
+<img width="427" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/e8a558f2-3d0d-48e4-a451-13d6ce2f6353">
 
 14. Kunden, deren Umsatzsoll größer als 5.000 EUR: Kundennummer, Firmenbezeichnung, Vertreter, Saldo
 ```
@@ -242,7 +257,9 @@ WHERE saldo = 0
 
 17. Welche der Artikel sind “hamserver”?
 ```
-
+SELECT *
+FROM artst
+WHERE artbez LIKE 'hamserver%'
 ```
 
 18. Artikel mit Vorzugspreis (10% niedriger als Verkaufspreis) unter 30 und über 1000€: Artikelnummer, Artikelbezeichnung, Vorzugspreis.
