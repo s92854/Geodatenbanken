@@ -184,3 +184,68 @@ SELECT kdnr,firma,strasse + ', '+ plz + ', ' + ort AS adresse,umssoll
 FROM kdst
 WHERE saldo = 0
 ```
+
+10. Alle Artikel mit positivem Lagerbestand & VP > 50€: Artikelnummer, Bezeichnung, Bestand, Verkaufs- und Einkaufspreis
+```
+
+```
+
+11. Vertreter mit Provision über 3,5%: Name & Anschrift (separate Spalten)
+```
+
+```
+
+12.  alle Artikel Artikelnummer, Bezeichnung, Bestand, Verkaufs- und Einkaufspreis, Handelsspanne (Differenz aus Einkaufs- und Verkaufspreis) absolut und prozentual (auf den Verkaufspreis bezogen, 2 Nachkommastellen)
+```
+
+```
+
+13. Artikel, deren Handelsspanne größer als 8%: Artikelnummer, Bezeichnung und Handelsspanne
+```
+
+```
+
+14. Kunden, deren Umsatzsoll größer als 5.000 EUR: Kundennummer, Firmenbezeichnung, Vertreter, Saldo
+```
+
+```
+
+15. Wert des niedrigsten, des höchsten und des durchschnittlichen Provisionssatzes. Durch textuelle Beschreibung kenntlich machen.
+```
+
+```
+
+16. Welche Kundengruppen gibt es? Mit Gruppennummer und beschreibendem Text.
+```
+
+```
+
+17. Welche der Artikel sind “hamserver”?
+```
+
+```
+
+18. Artikel mit Vorzugspreis (10% niedriger als Verkaufspreis) unter 30 und über 1000€: Artikelnummer, Artikelbezeichnung, Vorzugspreis.
+```
+
+```
+
+19. Alle Artikel deren Einkaufspreis Vielfaches von 25€: Artikelnummer, Artikelbezeichnung und Einkaufspreis
+```
+
+```
+
+20. Zu welchen unterschiedlichen Kundengruppen sind Kunden des Unternehmens zusammengefasst?
+```
+
+```
+
+21. Welche Kunden werden vom Vertreter mit Vertreternummer "7" betreut?
+```
+
+```
+
+22. Summen vom Einkaufspreis, Verkaufspreis, Vorzugspreis, Handelsspanne in €.
+```
+
+```
