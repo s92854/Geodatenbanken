@@ -242,8 +242,12 @@ WHERE ((vpreis - ekpreis) / vpreis) * 100 > 8.0;
 
 14. Kunden, deren Umsatzsoll größer als 5.000 EUR: Kundennummer, Firmenbezeichnung, Vertreter, Saldo
 ```
-
+SELECT kdnr,firma,vertreter,saldo
+FROM kdst
+WHERE umssoll > 5000
 ```
+
+<img width="293" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/833d8e0c-9ba9-4b8e-aa6f-048e5286cac7">
 
 15. Wert des niedrigsten, des höchsten und des durchschnittlichen Provisionssatzes. Durch textuelle Beschreibung kenntlich machen.
 ```
@@ -252,8 +256,12 @@ WHERE ((vpreis - ekpreis) / vpreis) * 100 > 8.0;
 
 16. Welche Kundengruppen gibt es? Mit Gruppennummer und beschreibendem Text.
 ```
-
+SELECT *
+FROM kdgru
 ```
+**Viel zu einfach. Was sonst Aufgabe?**
+
+<img width="179" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/1577373c-6d1e-43d5-946c-7e2e17c285e8">
 
 17. Welche der Artikel sind “hamserver”?
 ```
@@ -261,16 +269,27 @@ SELECT *
 FROM artst
 WHERE artbez LIKE 'hamserver%'
 ```
+> falls lediglich die Namen der hamserver gefragt sind: SELECT artbez
+
+<img width="537" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/74d7978f-f921-4dee-b9a1-a203e1532d83">
 
 18. Artikel mit Vorzugspreis (10% niedriger als Verkaufspreis) unter 30 und über 1000€: Artikelnummer, Artikelbezeichnung, Vorzugspreis.
 ```
-
+SELECT artnr,artbez,vpreis * 0.9 AS "Vorzugspreis"
+FROM artst
+WHERE vpreis * 0.9 > 1000 OR vpreis * 0.9 < 30
 ```
+
+<img width="246" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/50d259a6-112e-424f-beb4-5d9b6b7c30f4">
 
 19. Alle Artikel deren Einkaufspreis Vielfaches von 25€: Artikelnummer, Artikelbezeichnung und Einkaufspreis
 ```
-
+SELECT artnr,artbez,ekpreis
+FROM artst
+WHERE ekpreis % 25 = 0
 ```
+
+<img width="242" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/3ce82289-47e3-4426-bc50-f4e67e3e4f7c">
 
 20. Zu welchen unterschiedlichen Kundengruppen sind Kunden des Unternehmens zusammengefasst?
 ```
@@ -279,10 +298,28 @@ WHERE artbez LIKE 'hamserver%'
 
 21. Welche Kunden werden vom Vertreter mit Vertreternummer "7" betreut?
 ```
+SELECT kdnr,firma,vertreter
+FROM kdst
+WHERE vertreter = 7
+```
+
+<img width="227" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/c5647e93-97e3-4b68-afe0-d8882d0f0fc3">
+
+**Lösung mit einem Join, bei dem der Vertretername mit aufgelistet wird:**
 
 ```
+SELECT kdnr,firma,kdst.vertreter,vert.vorname || ' ' || vert.name AS "Vertretername"
+FROM kdst
+INNER JOIN vert ON kdst.vertreter = vert.vertreter
+WHERE kdst.vertreter = 7
+```
+
+<img width="294" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/f5408739-e49d-4f46-b481-253bf1f0bd6b">
 
 22. Summen vom Einkaufspreis, Verkaufspreis, Vorzugspreis, Handelsspanne in €.
 ```
-
+SELECT SUM(ekpreis) AS "Einkaufspreis gesamt", SUM(vpreis) AS "Verkaufspreis gesamt", SUM(vpreis * 0.9) AS "Vorzugspreis gesamt", SUM(ROUND(((vpreis-ekpreis)/vpreis)*100,2)) AS "Handelsspanne gesamt"
+FROM artst
 ```
+
+<img width="398" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/456b5dea-9285-4bde-bc15-9a19a41f04be">
