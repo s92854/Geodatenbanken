@@ -251,15 +251,23 @@ WHERE umssoll > 5000
 
 15. Wert des niedrigsten, des höchsten und des durchschnittlichen Provisionssatzes. Durch textuelle Beschreibung kenntlich machen.
 ```
-
+SELECT 'Niedrigster Provisionssatz' AS Beschreibung, MIN(prov) AS Wert
+FROM vert
+UNION ALL
+SELECT 'Höchster Provisionssatz' AS Beschreibung, MAX(prov) AS Wert
+FROM vert
+UNION ALL
+SELECT 'Durchschnittlicher Provisionssatz' AS Beschreibung, ROUND(AVG(prov),2) AS Wert
+FROM vert
 ```
+
+<img width="199" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/09a2c22e-f27a-43ed-a8ca-be0f8ba5f726">
 
 16. Welche Kundengruppen gibt es? Mit Gruppennummer und beschreibendem Text.
 ```
 SELECT *
 FROM kdgru
 ```
-**Viel zu einfach. Was sonst Aufgabe?**
 
 <img width="179" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/1577373c-6d1e-43d5-946c-7e2e17c285e8">
 
@@ -292,9 +300,23 @@ WHERE ekpreis % 25 = 0
 <img width="242" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/3ce82289-47e3-4426-bc50-f4e67e3e4f7c">
 
 20. Zu welchen unterschiedlichen Kundengruppen sind Kunden des Unternehmens zusammengefasst?
+
+**Lösung 1 - simple Auflistung der Kundengruppen:**
+```
+SELECT grup_txt
+FROM kdgru
 ```
 
+<img width="124" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/1651b97d-0212-42f5-baea-c3d7a3626942">
+
+**Lösung 2 - Join:**
 ```
+SELECT kdst.firma,kdgru.grup_txt
+FROM kdst
+INNER JOIN kdgru ON kdst.kdgruppe = kdgru.kdgruppe
+```
+
+<img width="221" alt="image" src="https://github.com/s92854/Geodatenbanken/assets/134683810/1886ca05-2511-4018-be96-f5f2850e12ff">
 
 21. Welche Kunden werden vom Vertreter mit Vertreternummer "7" betreut?
 ```
