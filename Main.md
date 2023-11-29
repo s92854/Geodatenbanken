@@ -34,19 +34,19 @@ ASC = ascending (aufwärts: A-Z, muss nicht hingeschrieben werden)
 
 DESC = descending (abwärts: Z-A)
 
-```
+```sql
 ORDER BY name ASC/DESC
 ```
 
 ### Joins
 ohne WHERE Bedingung entsteht ein Kreuzprodukt
-```
+```sql
 SELECT *
 FROM aufkopf AS a, aufpos AS p
 WHERE a.aufnr=p.aufnr
 ```
 
-```
+```sql
 SELECT *
 FROM aufkopf AS a, aufpos AS p,kdst
 WHERE a.aufnr=p.aufnr
@@ -164,7 +164,77 @@ Albumtitel(<u>AlbumNr</u>,Interpret,Albumname,Titelname,<u>TitelNr</u>)
 Album(<u>AlbumNr</u>,Albumname,Interpret) oder Album(<u>AlbumNr</u>,InterpretNr<sub>2</sub>,Albumname)(Interpret,Gebdatum,<u>InterpretNr</u>)
 Titel(TitelNr,TitelName)
 
+3. Normalform
 
+
+## User defined Collection Types
+* definieren statische Struktur, nicht Verhalten
+* stored procedure (user defined function)
+    * Unterprogramm, welches in der DB gespeichert und dort direkt ausgeführt wird
+    * Verlagerung von mehreren Datenbankverarbeitungsschritten in der DB
+    * Vermeidung von aufwändigem Datentransfer
+    * Entlastung des Anwendungsprogramms (Clients)
+    * Belastung des Datenbanksystems
+> bei großen DB-System können mehrere TB RAM benötigt werden
+
+### Einsatzgebiete
+* Transformationen beim Lesen/Schreiben
+* Konvertierung der Daten in ein bestimmtes Format
+* Bearbeitung der Daten nach komplexen Algorithmen
+* Gruppierung der Daten nach anderen Anforderungen
+* Ereignisgesteuerte Manipulation oder Überwachung von Daten
+
+### Collection Types
+```sql
+CREATE TYPE zahlen AS VARRAY(5) OF integer; –- Oracle
+```
+
+> erstellt einen neuen Type namens zahlen des typs int als Array
+
+```sql
+CREATE TABLE lotto (zahlen int[]); --PostgreSQL
+```
+
+> liefert ein Array des Typs int zurück
+
+```sql
+INSERT INTO lotto VALUES (ARRAY[1, 10, 23, 35, 4, 9]);
+```
+
+> fügt die Werte in ARRAY[] in zahlen ein
+
+### Distinct-Types
+Verhindern, dass verschiedene Types miteinander kombiniert werden
+
+
+
+### Bestandteile UDF-Header
+* Verhalten der Funktion (u.a. wichtig für Optimizer)
+    * IMMUTABLE → liefert immer das gleiche Ergebnis bei gleichen Parametern, verändert nicht die DB und liest nicht aus der DB
+    * STABLE → liefert das gleiche Ergebnis bei gleichen Parametern innerhalb eines Table Scans, verändert nicht die DB, aber liest aus der DB
+    * VOLATILE (standard) → das Ergebnis kann jederzeit verschieden sein (z.B. random()), Funktion kann weiterhin Seiteneffekte aufweisen
+* Verhalten bei NULL Input
+    * CALLED ON NULL INPUT (Standard)
+    * RETURNS NULL ON NULL INPUT (aka STRICT)
+* Ausführungsprivileg – Welche Privilegien gelten während der Ausführung der Funktion
+    * SECURITY INVOKER → Privilegien des Funktionsaufrufers
+    * SECURITY DEFINER → Privilegien vom Ersteller (Owner)
+    * Zusammenfassung: Habe ich Admin- oder meine Rechte?
+* Deklaration im DECLARE Block
+    * _var INT;
+* Initialisierung
+    * während der Deklaration im DECLARE
+        * _var INT := 3;
+        * _var INT DEFAULT 3;
+    * Erste Zuweisung im BEGIN
+* Zuweisung
+    * SET _var := 3;
+    * SELECT a INTO _var;
+* Funktion beenden
+    * RETURN → verläßt den Block bzw. die Funktion (void)
+    * RETURN value → gibt einen definierten Wert zurück
+    * RETURN NEXT → innerhalb der Cursor-Schleife liefert es die aktuelle Zeile an dem der Cursor steht
+    * RETURN QUERY → gibt ein komplettes Resultset der Abfrage zurück
 
 
 
