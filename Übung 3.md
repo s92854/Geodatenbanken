@@ -1,11 +1,11 @@
 # Übung 3
-## Nico Haupt (956450) und Tara Richter (934172)
+### Nico Haupt (956450) und Tara Richter (934172)
 
 0. Das Schema kann man sich [hier]() herunterladen
 
 &nbsp;
 
-1. **Flughäfen**
+## 1. **Flughäfen**
 
 a) Zuerst müssen die TYPES erstellt werden:
 
@@ -52,11 +52,53 @@ VALUES ('LAX','Los Angeles International Airport',NULL,'https://www.flylax.com',
 d) Nun rufen wir alle Informationen der Tabelle absteigend sortiert mit folgendem Befehl ab:
 
 ```SQL
-SELECT * FROM flughafen ORDER BY airportname DESC
+SELECT *
+FROM flughafen
+ORDER BY airportname DESC
 ```
 
 Das Ergebnis mit 3 Beispieldaten sieht dann so aus:
 
-<img hight="700" src="https://github.com/s92854/Geodatenbanken/assets/134683810/302608a0-e470-495f-b832-079498ee59ea">
+<img title="Informationen über Flughäfen" hight="700" src="https://github.com/s92854/Geodatenbanken/assets/134683810/302608a0-e470-495f-b832-079498ee59ea">
 
-2. **Fluggesellschaften**
+&nbsp;
+
+## 2. **Fluggesellschaften**
+
+a) Die Tabelle Flughafen ist bereits erstellt, jetzt fehlt jedoch noch die Tabelle Flugplan:
+
+```SQL
+CREATE TABLE flugplan (
+	id SERIAL PRIMARY KEY,
+	startairport TEXT REFERENCES flughafen.id,
+	zielairport TEXT REFERENCES flughafen.id,
+	flugnummer TEXT,
+	fluggesellschaft TEXT
+)
+```
+
+b) Diese Tabelle wird nun mit Beispieldaten gefüllt
+
+```SQL
+INSERT INTO flugplan (startairport,zielairport,flugnummer,fluggesellschaft) VALUES
+('MUC','BER',NULL,'easyJet'),
+('BER','LAX',NULL,'United Airlines'),
+('MUC','SFX',NULL,'Conair'),
+('MUC','VIE',NULL,'TUI Fly'),
+('BUD','MUC',NULL,'Condor'),
+('MUC','JFK',NULL,'Delta Air Lines'),
+('AMS','BER',NULL,'Lufthansa'),
+('MUC','SFX',NULL,'easyJet'),
+('LAX','BER',NULL,'Eurowings'),
+('STR','SFX',NULL,'Condor')
+```
+
+c) Dann kann die Abfrage erfolgen:
+
+```SQL
+SELECT DISTINCT fluggesellschaft
+FROM flugplan
+WHERE startairport = 'MUC';
+```
+
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/134683810/03f3ee22-0522-4098-b6f7-3c7b1cefa282">
