@@ -102,3 +102,94 @@ WHERE startairport = 'MUC';
 ```
 
 <img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/134683810/03f3ee22-0522-4098-b6f7-3c7b1cefa282">
+
+## 3. **Flugrouten**
+
+```SQL
+SELECT
+    a.startairport,
+    a.zielairport,
+    COALESCE(b.anzahl_fluege, 0) AS anzahl_fluege
+FROM
+    (
+        SELECT DISTINCT
+            startairport,
+            zielairport
+        FROM
+            flugplan
+    ) a
+LEFT JOIN
+    (
+        SELECT
+            startairport,
+            zielairport,
+            COUNT(*) AS anzahl_fluege
+        FROM
+            flugplan
+        WHERE
+            fluggesellschaft = 'Lufthansa'
+        GROUP BY
+            startairport, zielairport
+    ) b ON a.startairport = b.startairport AND a.zielairport = b.zielairport;
+```
+
+<img title="Flugrouten mit Anzahl von Lufthansa" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/17aec496-957d-483c-a988-50cef36d11dc">
+
+## 4. **jährliche Passagierzahlen**
+
+a) Datenbank Flughafen um die Passagierzahl erweitern
+
+```SQL
+alter table flughafen 
+add Passagiere2022 integer,
+add Passagiere2021 integer,
+add Passagiere2020 integer,
+add Passagiere2019 integer,
+add Passagiere2018 integer,
+add Passagiere2017 integer,
+add Passagiere2016 integer;
+```
+
+b) Passagierzahlen beim Flughafen Frankfurt einarbeiten 
+
+```SQL
+update flughafen
+set passagiere2022 = 48920000,
+set passagiere2021 = 24810000,
+set Passagiere2020 = 18770000,
+set Passagiere2019 = 70590000,
+set Passagiere2018 = 69510000,
+set Passagiere2017 = 64510000,
+set Passagiere2016 = 60790000
+where iata = FRA;
+```
+
+c) Abfrage erstellen
+
+## 5. **Abflugplan Dresden**
+
+a) Flugplan-Datenbank um Status, Start- und Landezeit erweitern
+
+```SQL
+alter table flugplan 
+add Startzeit time,
+add Landezeit time;
+```
+
+b) Einfügen von Beispieldaten 
+```SQL
+INSERT INTO flugplan (startairport,zielairport,flugnummer,fluggesellschaft, status, startzeit, landezeit) 
+VALUES ('DRS','AMS','KL1810','Royal Dutch Airline', 'CheckIn', '12:00:00', '13:30:00'),
+('DRS','DUS','EW9023','Eurowings','CheckIn', '19:40:00', '20:50:00'),
+('DRS','ZRH','LX919','Swiss International Air Lines', 'Boarding', '10:15:00', '11:30:00'),
+('DRS','PMI','EW6803','Eurowings','Boarding', '17:35:00', '20:05:00'),
+('DRS','AYT','XQ6272','Sun Express', 'Verspätet', '09:50:00', '14:55:00');
+```
+
+c) Abfrage
+```SQL
+SELECT flugnummer, fluggesellschaft, zielairport, status, startzeit, landezeit
+FROM flugplan
+WHERE  startairport = 'DRS';
+```
+<img title="Abflugplan von Dresden" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/554d272c-f7d7-4000-aefd-b6f80b138dab">
