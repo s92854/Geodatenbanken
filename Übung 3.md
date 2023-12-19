@@ -70,11 +70,11 @@ a) Die Tabelle Flughafen ist bereits erstellt, jetzt fehlt jedoch noch die Tabel
 ```SQL
 CREATE TABLE flugplan (
 	id SERIAL PRIMARY KEY,
-	startairport TEXT REFERENCES flughafen.id,
-	zielairport TEXT REFERENCES flughafen.id,
+	startairport TEXT,
+	zielairport TEXT,
 	flugnummer TEXT,
 	fluggesellschaft TEXT
-)
+);
 ```
 
 b) Diese Tabelle wird nun mit Beispieldaten gefüllt
