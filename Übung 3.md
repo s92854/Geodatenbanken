@@ -1,7 +1,9 @@
 # Übung 3
 ### Nico Haupt (956450) und Tara Richter (934172)
 
-0. Das Schema kann man sich [hier]() herunterladen
+<img title="Schema" src="https://github.com/s92854/Geodatenbanken/assets/134683810/48111624-bc79-4654-b4ce-ef37a4bb8fd2">
+
+**[Download](https://github.com/s92854/Geodatenbanken/files/13720853/schema_geodb_afg3.zip) des Schemas**
 
 &nbsp;
 
