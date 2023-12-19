@@ -193,3 +193,28 @@ FROM flugplan
 WHERE  startairport = 'DRS';
 ```
 <img title="Abflugplan von Dresden" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/554d272c-f7d7-4000-aefd-b6f80b138dab">
+
+## **Zusatz**
+
+1. Hinter dem Kürzel NYC stecken 3 Flughäfen -> der John F. Kennedy Airport (JFK), LaGuardia Airport (LGA) und Newark Liberty Airport (EWR).
+   Hinter dem Kürzel LON stecken die Londoner Flughäfen London-City (LCY), London-Gatwick (LGW), London-Heathrow (LHR), London-Luton (LTN), London-Southend (SEN) und London-Stansted (STN).
+
+3.
+a) erweitern der Datenbank FLughafen um Stadt und Land
+```SQL
+alter table flughafen
+add column Stadt text,
+add column Land text;
+```
+
+b) Den Flughafen Basel-Mülhausen-Freiburg einarbeiten und abfragen 
+```SQL
+insert into flughafen (iata, airportname, stadt, land)
+values ('EAP', 'Basel-Mülhausen-Freiburg', 'Basel/Mülhausen', 'Schweiz/Frankreich');
+```
+```SQL
+select iata, Stadt, Land from flughafen
+where iata = 'EAP';
+```
+<img title="Abflugplan von Dresden" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/f28a811c-e52d-4f3f-8276-bab2ee52bf2a">
+
