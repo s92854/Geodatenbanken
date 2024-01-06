@@ -1,11 +1,15 @@
 ## 1. **Enum für Status**
 
-a) Den Type Flugstatus mit 3 Variablenm erstellen: 
+a) Den Type Flugstatus mit 3 Variablenm erstellen:
 
+```SQL
 CREATE TYPE flugstatus AS Enum('CheckIn', 'Boarding', 'Verspaetet');
+````
 
 b) Den Datatype des Attributs Status ändern und Standartwert hinzufügen:
 
+```SQL
 ALTER TABLE flugplan
 ALTER COLUMN status TYPE flugstatus
 USING status::flugstatus;
+````
