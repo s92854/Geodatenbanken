@@ -6,10 +6,11 @@ a) Den Type Flugstatus mit 3 Variablenm erstellen:
 CREATE TYPE flugstatus AS Enum('CheckIn', 'Boarding', 'Verspaetet');
 ````
 
-b) Den Datatype des Attributs Status ändern und Standartwert hinzufügen:
+b) Den Datatype des Attributs Status ändern:
 
 ```SQL
 ALTER TABLE flugplan
 ALTER COLUMN status TYPE flugstatus
 USING status::flugstatus;
 ````
+## 2. **User Defined Type für Iata**
