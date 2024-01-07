@@ -16,18 +16,54 @@ USING status::flugstatus;
 
 ## 2. **User Defined Type für Iata**
 
-a) Den Type iata_codes erstellen
+a) Die Domain iata_codes erstellen
 
 ```SQL
-CREATE TYPE iata_code AS (
-    iata CHAR(3)
-);
+CREATE domain iata_code AS CHAR(3);
 ````
 
 b) Den Datatype des Attributs iata ändern:
 
 ```SQL
-
+ALTER TABLE airport 
+ALTER COLUMN iata type iata_code
+USING iata::iata_code;
 ````
 
 ## 2. **User Defined Function**
+
+User Defined Function anlegen: 
+
+```SQL
+CREATE OR REPLACE FUNCTION create_flightplan(
+    p_flugnr TEXT,
+    p_fluggesellschaft TEXT,
+    p_iataDep CHAR(3),
+    p_iataArr CHAR(3),
+    p_departure TIME,
+    p_arrival TIME,
+	p_status flugstatus
+) 
+RETURNS VOID
+LANGUAGE plpgsql
+VOLATILE STRICT
+SECURITY DEFINER
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM fluggesellschaft WHERE name = p_fluggesellschaft) THEN
+        RAISE EXCEPTION 'Die Fluggesellschaft "%" existiert nicht.', p_fluggesellschaft;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM airport WHERE iata_code = p_iataDep) THEN
+        RAISE EXCEPTION 'Der Start-Flughafen mit IATA-Code "%" existiert nicht.', p_iataDep;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM airport WHERE iata_code = p_iataArr) THEN
+        RAISE EXCEPTION 'Der Ziel-Flughafen mit IATA-Code "%" existiert nicht.', p_iataArr;
+    END IF;
+
+    INSERT INTO flugplan (flugnr, fluggesellschaft, iatadep, iataarr, departure, arrival, status)
+    VALUES (p_flugnr, p_fluggesellschaft, p_iataDep, p_iataArr, p_departure, p_arrival, p_status);
+END;
+$$;
+````
