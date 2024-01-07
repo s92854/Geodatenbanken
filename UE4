@@ -1,6 +1,6 @@
 ## 1. **Enum für Status**
 
-a) Den Type Flugstatus mit 3 Variablenm erstellen:
+a) Den Type Flugstatus mit 3 Variablen erstellen:
 
 ```SQL
 CREATE TYPE flugstatus AS Enum('CheckIn', 'Boarding', 'Verspaetet');
@@ -13,4 +13,21 @@ ALTER TABLE flugplan
 ALTER COLUMN status TYPE flugstatus
 USING status::flugstatus;
 ````
+
 ## 2. **User Defined Type für Iata**
+
+a) Den Type iata_codes erstellen
+
+```SQL
+CREATE TYPE iata_code AS (
+    iata CHAR(3)
+);
+````
+
+b) Den Datatype des Attributs iata ändern:
+
+```SQL
+
+````
+
+## 2. **User Defined Function**
