@@ -30,7 +30,7 @@ ALTER COLUMN iata type iata_code
 USING iata::iata_code;
 ````
 
-## 2. **User Defined Function**
+## 3. **User Defined Function**
 
 User Defined Function anlegen: 
 
@@ -66,4 +66,27 @@ BEGIN
     VALUES (p_flugnr, p_fluggesellschaft, p_iataDep, p_iataArr, p_departure, p_arrival, p_status);
 END;
 $$;
+````
+
+## 4. **Trigger**
+
+Trigger anlegen:
+
+```SQL
+CREATE OR REPLACE FUNCTION audit_column()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $Body$
+BEGIN
+    NEW.changed_at = NOW(); 
+    NEW.changed_by = current_user;
+    RETURN NEW;
+END;
+$Body$;
+
+CREATE TRIGGER before_update_trigger
+BEFORE UPDATE
+ON flugplan
+FOR EACH ROW
+EXECUTE FUNCTION audit_column();
 ````
