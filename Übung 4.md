@@ -160,3 +160,14 @@ yr = input('Jahr: ') or None
 # Ausführen des eigentlichen Programms
 runStatistic(fhc, psng, yr)
 ```
+
+## Testwerte
+### Es wurden einige Testwerte der Datenbank hinzugefügt:
+
+<img title="Alle Testdaten" src="https://github.com/s92854/Geodatenbanken/assets/134683810/6294fc71-be0b-4538-a1c5-1ecd17e69944">
+
+### Anschließend wurde nach TXL und BER (einzeln) gefiltert und in der Konsole ausgegeben
+
+<img title="Filterung nach TXL" src="https://github.com/s92854/Geodatenbanken/assets/134683810/2ab37e40-69e5-4c09-98d8-085286dbda96">
+
+<img title="Filterung nach BER" src="https://github.com/s92854/Geodatenbanken/assets/134683810/fcd3f69b-70a2-4b7d-ae6c-f5b6d152fde1">
