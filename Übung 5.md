@@ -97,3 +97,34 @@ WHERE
 ORDER BY
     distance_km;
 ```
+
+## 5. Flughäfen in Nordrhein-Westfalen
+```SQL
+
+```
+
+## 6. Berechnungen von Flächeninhalt, geom. Mittelpunkt, minim. umschl. Kreis und Rechteck
+```SQl
+
+```
+
+## 7. Nächstgelegene Flughäfen zu Köln/Bonn
+```SQL
+
+```
+
+## 8. Distanz der Flughäfen Frankfurt und Los Angeles
+### ST_Distance
+```SQL
+
+```
+
+### ST_DistanceSphere
+```SQL
+
+```
+
+### ST_DistanceSpheroid
+```SQL
+
+```
