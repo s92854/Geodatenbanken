@@ -99,32 +99,72 @@ ORDER BY
 ```
 
 ## 5. Flughäfen in Nordrhein-Westfalen
+Um sicherzugehen, dass postgis installiert ist, wird der CREATE EXTENSION Befehl ausgeführt
 ```SQL
-
+CREATE EXTENSION IF NOT EXISTS postgis;
 ```
+
+```SQL
+SELECT iata,airportname,city
+FROM airport
+WHERE ST_Within(airport.standort, (SELECT flaeche FROM bundesland WHERE name = 'Nordrhein-Westfalen'));
+```
+
+<img src="https://github.com/s92854/Geodatenbanken/assets/134683810/e88615ca-52f8-4b7f-80e9-1fdb6ff39aa0">
 
 ## 6. Berechnungen von Flächeninhalt, geom. Mittelpunkt, minim. umschl. Kreis und Rechteck
+### Flächeninhalt
 ```SQl
-
+SELECT ST_Area((SELECT flaeche FROM bundesland WHERE name = 'Nordrhein-Westfalen')) AS Flächeninhalt
+FROM bundesland;
 ```
+
+<img title="Flächeninhalt" src="https://github.com/s92854/Geodatenbanken/assets/134683810/659d5eae-0415-48fa-b4c0-708abfefd639">
+
+### Geometrischer Mittelpunkt
+```SQL
+SELECT ST_AsText(ST_Centroid((SELECT flaeche FROM bundesland WHERE name = 'Nordrhein-Westfalen'))) AS geometrischer_mittelpunkt
+FROM bundesland;
+```
+
+<img title="Geometrischer Mittelpunkt" src="https://github.com/s92854/Geodatenbanken/assets/134683810/49bc9bc0-83b5-4b88-853f-872a397ade9c">
+
+### Minimal umschließender Kreis
+```SQL
+SELECT ST_AsText(ST_MinimumBoundingCircle((SELECT flaeche FROM bundesland WHERE name = 'Nordrhein-Westfalen'))) AS minimal_umschließender_kreis
+FROM bundesland;
+```
+
+<img title="Minimal umschließender Kreis" src="https://github.com/s92854/Geodatenbanken/assets/134683810/26b30bc7-fcd4-4013-bc44-07eb827f95a2">
+
+### Minimal umschließendes Rechteck
+```SQL
+SELECT ST_AsText(ST_Envelope((SELECT flaeche FROM bundesland WHERE name = 'Nordrhein-Westfalen'))) AS minimales_umschließendes_rechteck
+FROM bundesland;
+```
+
+<img title="Minimal umschließendes Rechteck" src="https://github.com/s92854/Geodatenbanken/assets/134683810/9d1a9371-365c-4f27-bbca-4eb495beb541">
 
 ## 7. Nächstgelegene Flughäfen zu Köln/Bonn
 ```SQL
-
+SELECT iata, airportname, ST_AsText(standort) AS geometrie, ST_Distance(standort, (SELECT standort FROM airport WHERE iata = 'CGN')) AS distanz
+FROM airport
+WHERE iata != 'CGN'
+ORDER BY ST_Distance(standort, (SELECT standort FROM airport WHERE iata = 'CGN')) ASC
+LIMIT 3;
 ```
+
+<img title="Nächsten 3 Flughäfen zum Flughafen Köln" src="https://github.com/s92854/Geodatenbanken/assets/134683810/64bf09fe-11f5-494f-9b9b-46ab22fc5072">
 
 ## 8. Distanz der Flughäfen Frankfurt und Los Angeles
-### ST_Distance
 ```SQL
-
+SELECT ST_Distance((SELECT standort FROM airport WHERE iata = 'FRA'),(SELECT standort FROM airport WHERE iata = 'LAX')) AS distanz,
+ST_DistanceSphere((SELECT standort FROM airport WHERE iata = 'FRA'),(SELECT standort FROM airport WHERE iata = 'LAX'))/1000 AS distanz_sphere,
+ST_DistanceSpheroid((SELECT standort FROM airport WHERE iata = 'FRA'),(SELECT standort FROM airport WHERE iata = 'LAX'),'SPHEROID["WGS 84",6378137,298.257223563]')/1000 AS distanz_spheroid
+FROM airport
+LIMIT 1;
 ```
 
-### ST_DistanceSphere
-```SQL
+<img title="Distanz Flughäfen FRA LAX" src="https://github.com/s92854/Geodatenbanken/assets/134683810/109f7452-d791-4dd2-a6df-e16841a5ccac">
 
-```
-
-### ST_DistanceSpheroid
-```SQL
-
-```
+Die Werte sind so unterschiedlich, da *ST_Distanz* die planare Distanz, *ST_DistanzSphere* die Distanz auf einer perfekten Kugel und *ST_DistanzSpheroid* die Distanz auf dem Spheroid des Bezugssystems WGS84 berechnet. Das Spheroid stellt keine Kugel, sondern eine Ellipse dar. Das die Distanz von *ST_Distanz* so abweichend ist, kann ich jedoch nicht nachvollziehen. Würde man hier ebenso durch 1000 dividieren, erhält man eine Distanz von ca. 0,12km! 
