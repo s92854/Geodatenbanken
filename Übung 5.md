@@ -15,6 +15,8 @@ set standort = ST_GeomFromText('Point(13.4857623 52.3776072)')
 where iata ='BER';
 ```
 
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/b0e91ea6-937c-456d-ba9b-ff9332db44f8">
+
 b) Tabelle Bundesland erstellen:
 ```SQL
 create table Bundesland (
@@ -50,6 +52,8 @@ set standort = ST_GeomFromText('Point(-118.4116839 33.9437902)')
 where iata ='LAX';
 ```
 
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/b0e91ea6-937c-456d-ba9b-ff9332db44f8">
+
 b) Nordrhein-Westfalen Flughäfen hinzufügen:
 ```SQL
 insert into airport (iata, airportname, country, city, landebahn, standort) 
@@ -71,12 +75,16 @@ insert into airport (iata, airportname, country, city, landebahn, standort)
 values ('CGN', 'Flughafen Köln/Bonn', 'Germany', 'Köln', '2459m', ST_GeomFromText('Point(7.112011 50.87598)'));
 ```
 
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/7d02c6e6-6a31-40a6-897a-de18ed2ed873">
+
+
 c) Fläche Nordrhein-Westfalen erstellen (Polygon auf 8 Punkte aufgespannt):
 ```SQL
 INSERT INTO bundesland (name, flaeche)
 VALUES ('Nordrhein-Westfalen', 'POLYGON((5.9694583 51.8385864, 6.4113023 50.3185954, 9.4073073 51.6341921,
 	8.6758016 52.536239, 7.9650879 52.5429551, 8.388496 52.1445514, 7.9261338 52.0761215, 7.6176956 52.4843394, 5.9694583 51.8385864))');
 ```
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/bc7573c7-f5a7-4a06-8049-4af56c619fa8">
 
 ## 4. Düsseldorf und Umkreis
 ```SQL
@@ -97,6 +105,8 @@ WHERE
 ORDER BY
     distance_km;
 ```
+
+<img title="Fluggesellschaften mit Abflug von München" hight="500" src="https://github.com/s92854/Geodatenbanken/assets/142684377/333a196a-3bbb-493b-a6ce-b2e07de3f820">
 
 ## 5. Flughäfen in Nordrhein-Westfalen
 Um sicherzugehen, dass postgis installiert ist, wird der CREATE EXTENSION Befehl ausgeführt
