@@ -177,4 +177,21 @@ LIMIT 1;
 
 <img title="Distanz Flughäfen FRA LAX" src="https://github.com/s92854/Geodatenbanken/assets/134683810/109f7452-d791-4dd2-a6df-e16841a5ccac">
 
-Die Werte sind so unterschiedlich, da *ST_Distanz* die planare Distanz, *ST_DistanzSphere* die Distanz auf einer perfekten Kugel und *ST_DistanzSpheroid* die Distanz auf dem Spheroid des Bezugssystems WGS84 berechnet. Das Spheroid stellt keine Kugel, sondern eine Ellipse dar. Das die Distanz von *ST_Distanz* so abweichend ist, kann ich jedoch nicht nachvollziehen. Würde man hier ebenso durch 1000 dividieren, erhält man eine Distanz von ca. 0,12km! 
+Der erhaltene Wert bei ST_Distance ist in Grad. Deshalb muss die Geometrie in Geographie umgerechnet werden. Dazu muss vorerst die SRID von WGS 84, der Spalte *standort* gesetzt werden, da man sonst eine Fehlermeldung erhält.
+
+```SQL
+UPDATE airport
+SET standort = ST_SetSRID(standort, 4326)
+```
+
+```SQL
+SELECT ST_Distance(ST_Transform(standort, 4326)::geography, ST_Transform((SELECT standort FROM airport WHERE iata = 'LAX'), 4326)::geography)/1000 AS distanz,
+ST_DistanceSphere((SELECT standort FROM airport WHERE iata = 'FRA'),(SELECT standort FROM airport WHERE iata = 'LAX'))/1000 AS distanz_sphere,
+ST_DistanceSpheroid((SELECT standort FROM airport WHERE iata = 'FRA'),(SELECT standort FROM airport WHERE iata = 'LAX'),'SPHEROID["WGS 84",6378137,298.257223563]')/1000 AS distanz_spheroid
+FROM airport
+WHERE iata = 'FRA';
+```
+
+<img title="Umrechnung in km" src="https://github.com/s92854/Geodatenbanken/assets/134683810/9a9ad94d-b3d2-46ff-9b01-f3f84117ff12">
+
+Die Werte sind so unterschiedlich, da *ST_Distanz* die planare Distanz, *ST_DistanzSphere* die Distanz auf einer idealen Kugel und *ST_DistanzSpheroid* die Distanz auf dem Spheroid des Bezugssystems WGS84 berechnet. Das Spheroid stellt keine Kugel, sondern eine Ellipse dar. Ich gehe davon aus, dass der Distanzunterschied zwischen ST_Distance und ST_DistanceSpheroid sehr gering ist, da bei diesen beiden Methoden mit dem Bezugssystem WGS 84 gerechnet wurde und somit trotz großer Distanzen nur ein sehr geringer Unterschied zu verzeichnen ist.
