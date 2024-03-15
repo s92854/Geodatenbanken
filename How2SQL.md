@@ -21,6 +21,11 @@ PRIMARY KEY ('spaltenname')
 DROP TABLE IF tabellenname
 ```
 
+## Tabelle ändern
+```SQL
+ALTER TABLE
+```
+
 
 ## Reihenfolge einer Select-Abfrage
 ```SQL
@@ -129,3 +134,24 @@ SUM() - Zeilenwerte summieren
 LEN() - Länge einer Zeichenkette einer Spalte
 ROUND() - selektierte Werte runden
 ```
+
+## Constraints
+
+## User defined Types
+### ENUM erstellen
+
+## Index erstellen
+
+## Trigger erstellen
+
+## Normalformen
+### 0. Urtabelle
+### 1. Normalform
+### 2. Normalform
+### 3. Normalform
+
+## Geodatenbanken
+
+## NewSQL
+
+## NoSQL
