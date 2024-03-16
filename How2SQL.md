@@ -141,10 +141,16 @@ ROUND() - selektierte Werte runden
 
 ## Constraints
 
-## User defined Types
+## User Defined Types
+* Erstellung der statischen Struktur &rarr; kein Verhalten
+
 ### Array
 ```SQL
-CREATE TYPE typname (tabellenname datentyp[]);
+CREATE TYPE typname AS VARRAY(länge) OF datentyp; -- Oracle
+
+CREATE TABLE tabellenname (typname datentyp[]); -- PostgreSQL
+
+INSERT INTO typname VALUES(ARRAY[wert1,wert2,wert3]);
 ```
 
 ### Domain
@@ -156,11 +162,159 @@ CREATE DOMAIN squaremeter AS FLOAT;
 
 > Postgres betrachtet beide als zwei verschiedene, aber gleichartige Typen
 
+### Composite Types
+```SQL
+CREATE TYPE typname AS(variable1 datentyp, variable2 datentyp);
+
+CREATE TABLE tabellenname(spaltenname typname);
+
+SELECT spaltenname.variable1, spaltenname.variable2 FROM tabllenname;
+```
+
+### Untertypen erstellen
+```SQL
+CREATE TYPE typname1 AS (variablenname1 datentyp, variablenname2 datentyp);
+
+CREATE TYPE untertypname2
+    UNDER typname1(variablenname3 datentyp);
+```
+
 ### ENUM erstellen
+```SQL
+CREATE TYPE AS Enum enumname('wert1', 'wert2', 'wert3');
+
+CREATE TABLE tabellenname(variable1 enumname);
+
+SELECT 'wert1'::enumname;
+```
+
+## User Defined Functions
+> Beispiele
+
+```SQL
+CREATE OR REPLACE FUNCTION funktionsname(
+IN a INT,
+INOUT b INT,
+OUT c INT
+)
+RETURNS SETOF record
+LANGUAGE plpgsql
+VOLATILE
+AS $BODY$
+DECLARE
+...
+BEGIN
+...
+END;
+$BODY$;
+```
+
+### Stored Procedure
+```SQL
+CREATE OR REPLACE FUNCTION insert()
+RETURNS void
+LANGUAGE sql
+VOLATILE STRICT
+SECURITY DEFINER
+AS $BODY$
+INSERT INTO table1 ...
+INSERT INTO table2 ...
+$BODY$;
+```
+
+### Function
+```SQL
+CREATE OR REPLACE FUNCTION sum(
+IN a INT, IN b INT
+)
+RETURNS INT
+LANGUAGE sql
+IMMUTABLE STRICT
+AS $BODY$
+RETURN a + b;
+$BODY$;
+```
+
+```SQL
+CREATE OR REPLACE FUNCTION load_test(
+IN id INT
+)
+RETURNS TABLE(a INT, b INT)
+LANGUAGE sql
+STABLE
+AS $BODY$
+RETURN QUERY
+SELECT a, b
+FROM test
+WHERE id > coalesce(id, 0);
+-- wenn id NULL, dann 0
+$BODY$;
+```
+
+### Trigger
+```SQL
+CREATE OR REPLACE FUNCTION tr_change()
+RETURNS trigger
+LANGUAGE plpgsql
+VOLATILE
+AS $BODY$
+BEGIN
+NEW.changed_at := now();
+END;
+$BODY$;
+```
+
+### Cast Function
+```SQL
+CREATE OR REPLACE FUNCTION transform(
+IN _var domainname
+)
+RETURNS INT
+LANGUAGE sql
+IMMUTABLE STRICT
+AS $BODY$
+RETURN _var::TEXT::INT;
+$BODY$;
+```
+
+#### Konvertierung zwischen Datentypen, die nicht SQL-Standard enstprechen
+```SQL
+CREATE CAST (domainname AS DATENTYP)
+WITH FUNCTION transform(mydomain);
+```
+
+### Aggregate Function
+```SQL
+CREATE OR REPLACE FUNCTION add_coord(
+IN a coord,
+IN b coord
+)
+RETURNS coord
+LANGUAGE sql
+IMMUTABLE STRICT
+AS $BODY$
+RETURN ROW(a.x + b.x, a.y + b.y);
+$BODY$;
+```
+```SQL
+CREATE AGGREGATE sum(coord)(
+sfunc = add_coord,
+stype = coord,
+initcond = '(0,0)'
+);
+```
 
 ## Index erstellen
 
 ## Trigger erstellen
+
+```SQL
+CREATE TRIGGER triggername
+BEFORE / AFTER INSERT OR UPDATE
+ON tabellenname
+FOR EACH ROW
+SET NEW.spaltenname1 = (NEW.spaltenname2 + - * / wert);
+```
 
 ## Normalformen
 ### 0. Urtabelle
