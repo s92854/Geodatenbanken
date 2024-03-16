@@ -304,7 +304,56 @@ initcond = '(0,0)'
 );
 ```
 
-## Index erstellen
+## Indexe (B-Tree)
+* ohne Index langsame Datenverarbeitung
+* selbstständige Datenstruktur
+* eigener Speicherplatz benötigt
+* verweist auf Daten in einer Tabelle
+* doppelt verkettete Liste + Suchbaum
+
+> Shared hit = gelesene Blöcke aus dem Cache
+
+> read = nicht vorhandene Blöcke von der Platte
+
+### Kosten
+|Parameter|Description|Default|
+|--|--|--|
+|seq_page_cost|cost of a squentially fetched disk page|1.00|
+|random_page_cost|cost of a nonsequentionally fetched disk page|4.00|
+|cpu_tuple_cost|cost of processing each tuple (row)|0.01|
+|cup_operator_cost|cost of processing each operator or functional call|0.0025|
+|cpu_index_tuple_cost|cost of processing each index entry during an index scan|0.005|
+
+### Normaler Index
+```SQL
+CREATE INDEX idx_normal ON table(tabellenname)
+```
+
+### Zusammengesetzter Index
+```SQL
+CREATE INDEX idx_normal ON table(tabelle1, tabelle2)
+```
+
+### Funktionaler Index
+```SQL
+CREATE INDEX idx_normal ON table(LOWER(tabellenname))
+```
+
+### Partieller Index
+```SQL
+CREATE INDEX idx_normal ON table(tabellenname) WHERE bedinung
+```
+
+### Arten von Scans
+* **Sequential Scan:** Liest Tabelle sequentiell
+* **Index-Scan (Random Access Scan):** ließt Index mit Filterung (WHERE) &rarr; markiert invisible rows
+* **Bitmap Index Scan:** liest erst den ganzen Index und dann die Tabelle *(schneller bei großen Datenmengen)*
+* **Index Only Scan:** Liest nur Index
+
+### Index löschen
+```SQL
+DROP INDEX indexname;
+```
 
 ## Trigger erstellen
 
@@ -323,6 +372,10 @@ SET NEW.spaltenname1 = (NEW.spaltenname2 + - * / wert);
 ### 3. Normalform
 
 ## Geodatenbanken
+* Speicherung von vektorbasierten (Geo-) Daten
+  * Punkte (x, y)
+  * Linienzüge (x<sub>1</sub>, y<sub>1</sub>, x<sub>n</sub>, y<sub>n</sub>)
+  * Polygone
 
 ## NewSQL
 
