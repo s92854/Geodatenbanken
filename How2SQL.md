@@ -4,7 +4,7 @@
 ```SQL
 SELECT DISTINCT
 ```
-* bei mehrfach vorkommendenden Werten nur 1x ausgeben
+* doppelte Werte nicht mitausgeben
 
 ## Tabelle erstellen
 ```SQL
@@ -18,12 +18,16 @@ PRIMARY KEY ('spaltenname')
 
 ## Tabelle löschen
 ```SQL
-DROP TABLE IF tabellenname
+DROP TABLE IF EXISTS tabellenname
 ```
 
 ## Tabelle ändern
 ```SQL
-ALTER TABLE
+ALTER TABLE tabellenname
+ADD spaltenname datentyp;
+DROP COLUMN spaltenname
+RENAME COLUMN altername to neuername;
+ALTER COLUMN spaltenname neuerdatentyp;
 ```
 
 
@@ -138,6 +142,20 @@ ROUND() - selektierte Werte runden
 ## Constraints
 
 ## User defined Types
+### Array
+```SQL
+CREATE TYPE typname (tabellenname datentyp[]);
+```
+
+### Domain
+```SQL
+CREATE DOMAIN meter AS FLOAT;
+CREATE DOMAIN squaremeter AS FLOAT;
+```
+> Domain verwenden, ob spätere Fehler zu vermeiden
+
+> Postgres betrachtet beide als zwei verschiedene, aber gleichartige Typen
+
 ### ENUM erstellen
 
 ## Index erstellen
