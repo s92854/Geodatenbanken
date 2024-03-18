@@ -366,6 +366,9 @@ SET NEW.spaltenname1 = (NEW.spaltenname2 + - * / wert);
 ```
 
 ## Normalformen
+
+https://www.tinohempel.de/info/info/datenbank/normalisierung.htm
+
 ### 0. Urtabelle
 ### 1. Normalform
 ### 2. Normalform
