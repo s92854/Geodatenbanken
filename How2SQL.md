@@ -334,7 +334,7 @@ CREATE INDEX idx_normal ON table(tabellenname)
 CREATE INDEX idx_normal ON table(tabelle1, tabelle2)
 ```
 
-### Funktionaler Index
+### Funktionaler Index -- was macht dieser nochmal?
 ```SQL
 CREATE INDEX idx_normal ON table(LOWER(tabellenname))
 ```
@@ -376,6 +376,52 @@ SET NEW.spaltenname1 = (NEW.spaltenname2 + - * / wert);
   * Punkte (x, y)
   * Linienzüge (x<sub>1</sub>, y<sub>1</sub>, x<sub>n</sub>, y<sub>n</sub>)
   * Polygone
+
+### Index für räumliche Daten
+
+#### R-Tree
+* Untergliederung der großen Flächen in immer kleinere Flächen
+
+<img src="https://github.com/s92854/Geodatenbanken/assets/134683810/08b882d0-d05c-408c-9ee3-e0d5cf387cb1">
+
+
+#### GiST (Generalized Search Tree)
+```SQL
+CREATE INDEX <name> ON <tabellenname> USING GIST (<name_geometriespalte>);
+```
+
+#### GiST für n-dimensionale Indexe:
+```SQL
+CREATE INDEX <name> ON <tabellenname> USING GIST (<name_geometriespalte> gist_geometry_ops_nd);
+```
+
+#### BRIN (Block Range Index) für kleinere Indexe (Daten müssen sortiert sein!)
+```SQL
+CREATE INDEX <name> ON <tabellenname> USING BRIN (<name_geometriespalte>);
+```
+
+#### SP-GiST (Space-Partitioned Generalized Search Tree) für partitionierte Suchbäume
+```SQL
+CREATE INDEX <name> ON <tabellenname> USING SPGIST (<name_geometriespalte>);
+```
+
+#### Anlegen von nicht-blockierenden Indexen
+```SQL
+CREATE INDEX CONCURRENTLY <name> ON <tabellenname>
+```
+
+### Pattern Matrix (DE-9-Intersection-Model)
+* Schnitt wird durch einzelnen Punkt beschrieben: **0**
+* Schnitt wird durch Linien beschrieben: **1**
+* Schnitt wird durch Flächen beschrieben: **2**
+* Es liegt (irgendein) Schnitt vor: **T**
+* Es liegt kein Schnitt vor: **F**
+* es ist egal, ob ein Schnitt vorliegt (keine Aussage): *
+
+<img height="600" src="https://github.com/s92854/Geodatenbanken/assets/134683810/880801e4-6855-40fb-bc75-514abf740e65">
+
+* von links nach rechts, oben nach unten lesen: **212101212**
+
 
 ## NewSQL
 
