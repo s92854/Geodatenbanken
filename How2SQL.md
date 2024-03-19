@@ -128,18 +128,39 @@ HAVING bedingung = < <= > >= wert
 
 ## Weitere Funktionen
 ```SQL
-AVG() - Durchschnittswert
-COUNT() - Zeilen zählen
-FIRST() - ersten Wert einer Spalte selektieren
-LAST() - letzten Wert einer Spalte selektieren
-MAX() - höchsten Wert einer Spalte selektieren
-MIN() - kleinsten Wert einer Spalte selektieren
-SUM() - Zeilenwerte summieren
-LEN() - Länge einer Zeichenkette einer Spalte
-ROUND() - selektierte Werte runden
+AVG() -- Durchschnittswert
+COUNT() -- Zeilen zählen
+FIRST() -- ersten Wert einer Spalte selektieren
+LAST() -- letzten Wert einer Spalte selektieren
+MAX() -- höchsten Wert einer Spalte selektieren
+MIN() -- kleinsten Wert einer Spalte selektieren
+SUM() -- Zeilenwerte summieren
+LEN() -- Länge einer Zeichenkette einer Spalte
+ROUND() -- selektierte Werte runden
 ```
 
 ## Constraints
+* Constraints sind weitere Eigenschaften, die eine Tabelle oder Spalte annehmen soll. Dazu zählen:
+
+```SQL
+NOT NULL -- Werte können / drüfen nicht NULL werden
+UNIQUE -- Stellt sicher, dass alle Werte der Spalte einzigartig sind
+PRIMARY KEY -- Setzt Spalte als Primärschlüssel
+FOREIGN KEY -- Setzt Spalte als Fremdschlüssel
+CHECK -- Stellt sicher, dass die Werte eine bestimmte Bedingung in einer Spalte erfüllen
+DEFAULT -- legt einen Standardwert fest, sollte keiner gegeben werden
+CREATE INDEX -- Index erstellen
+```
+
+* Es wird folgende Syntax verwendet:
+
+```SQL
+CREATE TABLE tabellenname(
+spalte1 datentyp constraint,
+spalte2 datentyp constraint,
+spalte3 datentyp constraint,
+);
+```
 
 ## User Defined Types
 * Erstellung der statischen Struktur &rarr; kein Verhalten
