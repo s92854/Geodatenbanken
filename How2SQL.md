@@ -50,12 +50,12 @@ ORDER BY spaltenname1, spaltenname2 ASC / DESC
 ## Insert
 ```SQL
 INSERT INTO tabellenname
-VALUES('Wert1,'Wert2','Wert3')
+VALUES('Wert1','Wert2','Wert3')
 
-ODER
+-- ODER
 
 INSERT INTO tabellenname(spalte1,spalte3)
-VALUES('Wert1,'Wert3')
+VALUES('Wert1','Wert3')
 ```
 > Bei Option 1 müssen in alle Spalten Werte eingetragen werden
 
@@ -91,7 +91,7 @@ WHERE bedingung
 ```
 > Es werden alle Werte der linken, aber nur die Werte der rechten Tabelle übernommen, die zur gegebenen Bedinung passen &rarr; Auffüllen mit NULL
 
-### LEFT JOIN
+### RIGHT JOIN
 ```SQL
 SELECT spaltenname
 FROM tabelle1
@@ -111,14 +111,14 @@ FROM tabellennname2
 
 > ohne UNION ALL werden doppelte Werte ignoriert (= SELECT DISTINCT)
 
-## Subquery
+### Subquery
 ```SQL
 SELECT spaltenname1
 FROM tabellenname1
 WHERE bedingung IN (SELECT spaltenname2 FROM tabellenname2)
 ```
 
-## HAVING
+### HAVING
 ```SQL
 SELECT spaltenname
 FROM tabellenname
@@ -126,7 +126,7 @@ GROUP BY spaltenname
 HAVING bedingung = < <= > >= wert
 ```
 
-## Weitere Funktionen
+### Weitere Funktionen
 ```SQL
 AVG() -- Durchschnittswert
 COUNT() -- Zeilen zählen
@@ -143,7 +143,7 @@ ROUND() -- selektierte Werte runden
 * Constraints sind weitere Eigenschaften, die eine Tabelle oder Spalte annehmen soll. Dazu zählen:
 
 ```SQL
-NOT NULL -- Werte können / drüfen nicht NULL werden
+NOT NULL -- Werte können / dürfen nicht NULL werden
 UNIQUE -- Stellt sicher, dass alle Werte der Spalte einzigartig sind
 PRIMARY KEY -- Setzt Spalte als Primärschlüssel
 FOREIGN KEY -- Setzt Spalte als Fremdschlüssel
