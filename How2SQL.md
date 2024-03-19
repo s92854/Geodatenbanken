@@ -148,7 +148,7 @@ UNIQUE -- Stellt sicher, dass alle Werte der Spalte einzigartig sind
 PRIMARY KEY -- Setzt Spalte als Primärschlüssel
 FOREIGN KEY -- Setzt Spalte als Fremdschlüssel
 CHECK -- Stellt sicher, dass die Werte eine bestimmte Bedingung in einer Spalte erfüllen
-DEFAULT -- legt einen Standardwert fest, sollte keiner gegeben werden
+DEFAULT 'standardwert' -- legt einen Standardwert fest, sollte keiner gegeben werden
 CREATE INDEX -- Index erstellen
 ```
 
@@ -202,7 +202,7 @@ CREATE TYPE untertypname2
 
 ### ENUM erstellen
 ```SQL
-CREATE TYPE AS Enum enumname('wert1', 'wert2', 'wert3');
+CREATE TYPE enumname AS Enum ('wert1', 'wert2', 'wert3');
 
 CREATE TABLE tabellenname(variable1 enumname);
 
